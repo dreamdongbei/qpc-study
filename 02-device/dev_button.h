@@ -4,12 +4,12 @@
 #include <stdint.h>
 #include "qpc.h"
 
-typedef enum button_action
+enum button_action
 {
     DevButtonAction_Click = 0,
     DevButtonAction_DoubleClick,
     DevButtonAction_LongPress,
-} button_action_t;
+};
 
 typedef struct dev_button_event
 {

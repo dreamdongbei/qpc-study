@@ -173,9 +173,14 @@ extern "C" {
 #include "system_gd32f3x0.h"
 #include <stdint.h>
 
+
     /* enum definitions */
     typedef enum {DISABLE = 0, ENABLE = !DISABLE} EventStatus, ControlStatus;
-    typedef enum {FALSE = 0, TRUE = !FALSE} bool;
+//    typedef enum {FALSE = 0, TRUE = !FALSE} bool;
+#include <stdbool.h>
+#define FALSE                       false
+#define TRUE                        true
+    
     typedef enum {RESET = 0, SET = !RESET} FlagStatus;
     typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrStatus;
 

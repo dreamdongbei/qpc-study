@@ -15,7 +15,7 @@ void QF_onCleanup(void)
 
 }
 
-void Q_onAssert(char_t const * const module, int_t const loc)
+void Q_onAssert(char_t const * const module, int const loc)
 {
     
 }
