@@ -381,12 +381,17 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>App</GroupName>
+          <GroupName>User</GroupName>
           <Files>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\bsp.c</FilePath>
             </File>
           </Files>
         </Group>
