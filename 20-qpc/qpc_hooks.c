@@ -2,7 +2,7 @@
 
 void QV_onIdle(void)
 {
-
+    QF_INT_ENABLE();
 }
 
 void QF_onStartup(void)

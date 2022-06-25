@@ -1,6 +1,7 @@
 #include "bsp.h"
 #include "qpc.h"
 #include "event_def.h"
+#include "sm_led.h"
 
 int main(void)
 {
@@ -14,6 +15,19 @@ int main(void)
     QF_poolInit(sml_pool_sto,                           // 事件池的初始化
                 sizeof(sml_pool_sto),
                 sizeof(sml_pool_sto[0]));
+                
+    sm_led_init();
     
     return QF_run();                                    // 框架启动
+}
+
+extern sm_led_t sm_led;
+
+void cb_systick(void)
+{
+    if ((system_time() % 500) == 0)
+    {
+        QEvt *e = Q_NEW(QEvt, Evt_LedOnOff);
+        QACTIVE_POST(&sm_led.super, e, &cb_systick);
+    }
 }
