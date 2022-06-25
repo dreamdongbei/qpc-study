@@ -6,8 +6,8 @@
 enum
 {
     Event_Test = Q_USER_SIG,
-    MAX_PUB_SIG,
     Evt_LedOnOff,
+    MAX_PUB_SIG,
     
     MAX_SIG
 };

@@ -21,13 +21,11 @@ int main(void)
     return QF_run();                                    // 框架启动
 }
 
-extern sm_led_t sm_led;
-
 void cb_systick(void)
 {
     if ((system_time() % 500) == 0)
     {
         QEvt *e = Q_NEW(QEvt, Evt_LedOnOff);
-        QACTIVE_POST(&sm_led.super, e, &cb_systick);
+        QF_PUBLISH(e, &cb_systick);
     }
 }

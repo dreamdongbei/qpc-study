@@ -6,11 +6,17 @@
 
 Q_DEFINE_THIS_MODULE("SmLed")
 
+// LED类的定义
+typedef struct sm_led_tag
+{
+    QActive super;                                      // 对QActive类的继承
+} sm_led_t;
+
 static QState state_init(sm_led_t * const me, void const * const par);
 static QState state_on(sm_led_t * const me, QEvt const * const e);
 static QState state_off(sm_led_t * const me, QEvt const * const e);
 
-sm_led_t sm_led;
+static sm_led_t sm_led;
 
 void sm_led_init(void)
 {
@@ -32,6 +38,8 @@ void sm_led_init(void)
 static QState state_init(sm_led_t * const me, void const * const par)
 {
     led_init();
+    
+    QActive_subscribe(&me->super, Evt_LedOnOff);
     
     return Q_TRAN(&state_on);
 }
