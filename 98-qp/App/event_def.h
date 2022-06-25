@@ -1,11 +1,12 @@
+#ifndef EVENT_DEF_H
+#define EVENT_DEF_H
+
 #include "qpc.h"
 
-enum DPPSignals {
-    Evt_AoLow = Q_USER_SIG,
-    Evt_AoHigh,
+enum
+{
+    Event_Test = Q_USER_SIG,
     MAX_PUB_SIG,
-
-    Evt_Send,
     
     MAX_SIG
 };
@@ -15,3 +16,4 @@ typedef struct m_evt_tag {
     uint32_t data;
 } m_evt_t;
 
+#endif
