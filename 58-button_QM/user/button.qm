@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="5.1.4" links="0">
+ <framework name="qpc"/>
+ <package name="sm" stereotype="0x02">
+  <class name="sm_button_t" superclass="qpc::QActive">
+   <attribute name="e_pool" type="QTimeEvt" visibility="0x00" properties="0x00"/>
+   <attribute name="button_id" type="uint8_t" visibility="0x00" properties="0x00"/>
+   <attribute name="e_time_count" type="QTimeEvt" visibility="0x00" properties="0x00"/>
+   <attribute name="status_bkp" type="bool" visibility="0x00" properties="0x00"/>
+   <attribute name="time_pressed" type="uint32_t" visibility="0x00" properties="0x00"/>
+   <attribute name="time_released" type="" visibility="0x00" properties="0x00"/>
+   <operation name="sm_button_init" type="void" visibility="0x00" properties="0x00"/>
+   <statechart properties="0x00">
+    <initial target="../1">
+     <action>// 初始化所有的时间事件</action>
+     <initial_glyph conn="16,2,4,0,4">
+      <action box="0,-2,10,2"/>
+     </initial_glyph>
+    </initial>
+    <state name="work">
+     <entry>// 初始化</entry>
+     <initial target="../2">
+      <initial_glyph conn="18,10,4,0,2">
+       <action box="0,-2,10,2"/>
+      </initial_glyph>
+     </initial>
+     <tran trig="ButtonPoll">
+      <action>// 获取当前按键的状态，当状态发生变化时，发送</action>
+      <tran_glyph conn="78,12,1,-1,-16">
+       <action box="-14,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <state name="idle">
+      <tran trig="ButtonPressed" target="../../3">
+       <action>// 记录按下去的时间</action>
+       <tran_glyph conn="18,20,2,0,6">
+        <action box="0,2,14,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="16,12,14,8"/>
+     </state>
+     <state name="click">
+      <tran trig="ButtonReleased" target="../../4">
+       <tran_glyph conn="18,36,2,0,6">
+        <action box="0,2,14,2"/>
+       </tran_glyph>
+      </tran>
+      <tran trig="TimeCount">
+       <choice target="../../../5">
+        <guard>if ((system_time() - me-&gt;time_pressed) &gt; </guard>
+        <choice_glyph conn="48,30,4,0,42">
+         <action box="1,0,10,2"/>
+        </choice_glyph>
+       </choice>
+       <tran_glyph conn="30,30,1,-1,18">
+        <action box="2,-2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="16,26,14,10"/>
+     </state>
+     <state name="release">
+      <tran trig="ButtonPressed" target="../../6">
+       <tran_glyph conn="18,52,2,0,6">
+        <action box="0,2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <tran trig="TimeCount">
+       <choice target="../../../5">
+        <choice_glyph conn="42,44,4,0,28">
+         <action box="1,0,10,2"/>
+        </choice_glyph>
+       </choice>
+       <tran_glyph conn="30,44,1,-1,12">
+        <action box="2,-2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="16,42,14,10"/>
+     </state>
+     <state name="long_press">
+      <tran trig="ButtonReleased" target="../../2">
+       <tran_glyph conn="56,74,1,1,4,-60,-30">
+        <action box="4,-2,10,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="16,72,40,10"/>
+     </state>
+     <state name="double_click">
+      <tran trig="ButtonReleased" target="../../2">
+       <tran_glyph conn="16,60,3,3,-4,-46,4">
+        <action box="-10,-6,12,2"/>
+       </tran_glyph>
+      </tran>
+      <state_glyph node="16,58,14,8"/>
+     </state>
+     <state_glyph node="4,6,74,80">
+      <entry box="1,2,6,2"/>
+     </state_glyph>
+    </state>
+    <state_diagram size="90,90"/>
+   </statechart>
+  </class>
+ </package>
+ <package name="event" stereotype="0x01">
+  <class name="button_event_t" superclass="qpc::QEvt">
+   <attribute name="id" type="uint8_t" visibility="0x00" properties="0x00"/>
+   <attribute name="action" type="uint8_t" visibility="0x00" properties="0x00"/>
+  </class>
+ </package>
+ <directory name=".">
+  <file name="sm_button_qm.h"/>
+  <file name="sm_button_qm.c"/>
+  <file name="sm_led_qm.c"/>
+  <file name="sm_led_qm.h"/>
+ </directory>
+</model>

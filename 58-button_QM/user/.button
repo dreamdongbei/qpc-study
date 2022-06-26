@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="5.1.4">
+ <item name="license"></item>
+ <group name="locked"/>
+ <group name="settings">
+  <item name="tabs">1</item>
+  <item name="windows">0</item>
+  <item name="grid">3</item>
+  <item name="backups">0</item>
+ </group>
+ <group name="windows">
+  <item id="sm::sm_button_t::SM">0,0,299,924,*</item>
+  <item id=".::sm_button_qm.h">-405,0,674,300</item>
+  <item id=".::sm_led_qm.c">-405,568,674,300</item>
+  <item id=".::sm_led_qm.h">0,624,674,300</item>
+ </group>
+ <group name="search">
+  <item name="options">2032128</item>
+  <item name="replace">0</item>
+ </group>
+ <group name="vars"/>
+ <group name="tools">
+  <group name="tool">
+   <item name="icon">0</item>
+   <item name="title"></item>
+   <item name="command"></item>
+   <item name="args"></item>
+   <item name="dir"></item>
+   <item name="options">0</item>
+  </group>
+  <group name="tool">
+   <item name="icon">0</item>
+   <item name="title"></item>
+   <item name="command"></item>
+   <item name="args"></item>
+   <item name="dir"></item>
+   <item name="options">0</item>
+  </group>
+  <group name="tool">
+   <item name="icon">0</item>
+   <item name="title"></item>
+   <item name="command"></item>
+   <item name="args"></item>
+   <item name="dir"></item>
+   <item name="options">0</item>
+  </group>
+  <group name="tool">
+   <item name="icon">0</item>
+   <item name="title"></item>
+   <item name="command"></item>
+   <item name="args"></item>
+   <item name="dir"></item>
+   <item name="options">0</item>
+  </group>
+  <group name="tool">
+   <item name="icon">0</item>
+   <item name="title"></item>
+   <item name="command"></item>
+   <item name="args"></item>
+   <item name="dir"></item>
+   <item name="options">0</item>
+  </group>
+ </group>
+</session>
