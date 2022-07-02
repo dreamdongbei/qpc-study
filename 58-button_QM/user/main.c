@@ -2,10 +2,12 @@
 #include "button.h"
 #include "qpc.h"
 #include "event_def.h"
+#include "sm_def.h"
 #include "sm_led.h"
-#include "sm_button.h"
+#include "sm_button_qm.h"
+#include "sm_count.h"
 
-sm_button_t button_user;
+sm_button button_user;
 
 int main(void)
 {
@@ -22,9 +24,10 @@ int main(void)
                 sizeof(sml_pool_sto[0]));
                 
     sm_led_init();
+    sm_count_init();
                 
-    QEvt const *equeue[128];
-    sm_button_init(&button_user, ButtonId_UserKey, 2, equeue, 128);
+    static QEvt const *equeue[SM_BUTTON_QUEUE_LENGTH];
+    sm_button_init(&button_user, ButtonId_UserKey, 2, equeue, SM_BUTTON_QUEUE_LENGTH);
     
     return QF_run();                                    // 框架启动
 }

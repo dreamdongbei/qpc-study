@@ -3,7 +3,7 @@
 
 static void systick_config(void);
 
-static uint32_t system_time_ms = 0;
+uint32_t system_time_ms = 0;
 
 void bsp_init(void)
 {

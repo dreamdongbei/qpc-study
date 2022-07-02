@@ -57,7 +57,6 @@ bool button_is_pressed(uint8_t button_id)
 
 static void timer_config(void)
 {
-    timer_oc_parameter_struct timer_ocinitpara;
     timer_parameter_struct timer_initpara;
 
     /* enable the peripherals clock */

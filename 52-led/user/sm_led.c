@@ -15,8 +15,10 @@ sm_led_t sm_led;
 void sm_led_init(void)
 {
     sm_led_t *me = &sm_led;
+    
+    me->status = 0;
 
-    // 活动对象的构建
+    // 活动对象的构造
     QActive_ctor(&me->super, Q_STATE_CAST(&state_init));
     // 活动对象的启动
     static QEvt const *e_queue[SM_LED_QUEUE_LENGTH];
@@ -33,7 +35,7 @@ static QState state_init(sm_led_t * const me, void const * const par)
 {
     led_init();
     
-    return Q_TRAN(&state_on);
+    return Q_TRAN(&state_off);
 }
 
 // LED的on状态
@@ -45,6 +47,7 @@ static QState state_on(sm_led_t * const me, QEvt const * const e)
             {
                 led_set_status(i, LedStatus_On);
             }
+            me->status = 1;
             return Q_HANDLED();                     // 通知框架，事件已处理
 
         case Q_EXIT_SIG:
@@ -67,6 +70,7 @@ static QState state_off(sm_led_t * const me, QEvt const * const e)
             {
                 led_set_status(i, LedStatus_Off);
             }
+            me->status = 0;
             return Q_HANDLED();
 
         case Q_EXIT_SIG:

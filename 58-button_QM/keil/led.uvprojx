@@ -404,14 +404,19 @@
               <FilePath>..\user\sm_led.c</FilePath>
             </File>
             <File>
-              <FileName>sm_button.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\user\sm_button.c</FilePath>
-            </File>
-            <File>
               <FileName>button.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\button.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_button_qm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\sm_button_qm.c</FilePath>
+            </File>
+            <File>
+              <FileName>sm_count.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\sm_count.c</FilePath>
             </File>
           </Files>
         </Group>

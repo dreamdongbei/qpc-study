@@ -2,17 +2,19 @@
 <model version="5.1.4" links="0">
  <framework name="qpc"/>
  <package name="sm" stereotype="0x02">
-  <class name="sm_button_t" superclass="qpc::QActive">
-   <attribute name="e_pool" type="QTimeEvt" visibility="0x00" properties="0x00"/>
+  <class name="sm_button" superclass="qpc::QActive">
+   <attribute name="e_poll" type="QTimeEvt" visibility="0x00" properties="0x00"/>
    <attribute name="button_id" type="uint8_t" visibility="0x00" properties="0x00"/>
    <attribute name="e_time_count" type="QTimeEvt" visibility="0x00" properties="0x00"/>
    <attribute name="status_bkp" type="bool" visibility="0x00" properties="0x00"/>
    <attribute name="time_pressed" type="uint32_t" visibility="0x00" properties="0x00"/>
-   <attribute name="time_released" type="" visibility="0x00" properties="0x00"/>
-   <operation name="sm_button_init" type="void" visibility="0x00" properties="0x00"/>
-   <statechart properties="0x00">
+   <attribute name="time_released" type="uint32_t" visibility="0x00" properties="0x00"/>
+   <attribute name="status" type="bool" visibility="0x00" properties="0x00"/>
+   <statechart properties="0x01">
     <initial target="../1">
-     <action>// 初始化所有的时间事件</action>
+     <action>// Send all time events.
+QTimeEvt_armX(&amp;me-&gt;e_poll, 1, 1);
+QTimeEvt_armX(&amp;me-&gt;e_time_count, 1, 1);</action>
      <initial_glyph conn="16,2,4,0,4">
       <action box="0,-2,10,2"/>
      </initial_glyph>
@@ -25,14 +27,27 @@
       </initial_glyph>
      </initial>
      <tran trig="ButtonPoll">
-      <action>// 获取当前按键的状态，当状态发生变化时，发送</action>
+      <action>// Get the status of button, and send Evt_Press or Release to the sm_button.
+me-&gt;status = button_is_pressed(me-&gt;button_id);
+if (me-&gt;status == true &amp;&amp; me-&gt;status_bkp == false)
+{
+    QEvt *e = Q_NEW(QEvt, ButtonPressed_SIG);
+    QACTIVE_POST(&amp;me-&gt;super, e, me);
+}
+else if (me-&gt;status == false &amp;&amp; me-&gt;status_bkp == true)
+{
+    QEvt *e = Q_NEW(QEvt, ButtonReleased_SIG);
+    QACTIVE_POST(&amp;me-&gt;super, e, me);
+}
+me-&gt;status_bkp = me-&gt;status;</action>
       <tran_glyph conn="78,12,1,-1,-16">
        <action box="-14,-2,10,2"/>
       </tran_glyph>
      </tran>
      <state name="idle">
       <tran trig="ButtonPressed" target="../../3">
-       <action>// 记录按下去的时间</action>
+       <action>// Record the time when the button is pressed.
+me-&gt;time_pressed = system_time();</action>
        <tran_glyph conn="18,20,2,0,6">
         <action box="0,2,14,2"/>
        </tran_glyph>
@@ -40,14 +55,33 @@
       <state_glyph node="16,12,14,8"/>
      </state>
      <state name="click">
-      <tran trig="ButtonReleased" target="../../4">
-       <tran_glyph conn="18,36,2,0,6">
+      <tran trig="ButtonReleased">
+       <action>// Record the time when the button is released.
+me-&gt;time_released = system_time();</action>
+       <choice target="../../../4">
+        <guard>(system_time() - me-&gt;time_pressed) &lt;= SM_BUTTON_CLICK_TIME_PRESS</guard>
+        <action>me-&gt;time_released = system_time();</action>
+        <choice_glyph conn="18,39,4,0,3">
+         <action box="1,0,10,2"/>
+        </choice_glyph>
+       </choice>
+       <choice target="../../../2">
+        <guard>else</guard>
+        <action>button_event *e = (button_event *)Q_NEW(button_event, ButtonLongPress_SIG);
+e-&gt;id = me-&gt;button_id;
+e-&gt;action = ButtonAction_Click;
+QF_PUBLISH((QEvt *)e, me);</action>
+        <choice_glyph conn="18,39,5,3,-8,-21,6">
+         <action box="1,0,10,2"/>
+        </choice_glyph>
+       </choice>
+       <tran_glyph conn="18,36,2,-1,3">
         <action box="0,2,14,2"/>
        </tran_glyph>
       </tran>
       <tran trig="TimeCount">
        <choice target="../../../5">
-        <guard>if ((system_time() - me-&gt;time_pressed) &gt; </guard>
+        <guard>(system_time() - me-&gt;time_pressed) &gt; SM_BUTTON_CLICK_TIME_PRESS</guard>
         <choice_glyph conn="48,30,4,0,42">
          <action box="1,0,10,2"/>
         </choice_glyph>
@@ -65,8 +99,13 @@
        </tran_glyph>
       </tran>
       <tran trig="TimeCount">
-       <choice target="../../../5">
-        <choice_glyph conn="42,44,4,0,28">
+       <choice target="../../../2">
+        <guard>(system_time() - me-&gt;time_released) &gt;= SM_BUTTON_CLICK_TIME_RELEASE</guard>
+        <action>button_event *e = (button_event *)Q_NEW(button_event, ButtonClick_SIG);
+e-&gt;id = me-&gt;button_id;
+e-&gt;action = ButtonAction_Click;
+QF_PUBLISH((QEvt *)e, me);</action>
+        <choice_glyph conn="42,44,4,1,-28,-12">
          <action box="1,0,10,2"/>
         </choice_glyph>
        </choice>
@@ -78,6 +117,10 @@
      </state>
      <state name="long_press">
       <tran trig="ButtonReleased" target="../../2">
+       <action>button_event *e = (button_event *)Q_NEW(button_event, ButtonLongPress_SIG);
+e-&gt;id = me-&gt;button_id;
+e-&gt;action = ButtonAction_LongPress;
+QF_PUBLISH((QEvt *)e, me);</action>
        <tran_glyph conn="56,74,1,1,4,-60,-30">
         <action box="4,-2,10,2"/>
        </tran_glyph>
@@ -86,7 +129,11 @@
      </state>
      <state name="double_click">
       <tran trig="ButtonReleased" target="../../2">
-       <tran_glyph conn="16,60,3,3,-4,-46,4">
+       <action>button_event *e = (button_event *)Q_NEW(button_event, ButtonDoubleClick_SIG);
+e-&gt;id = me-&gt;button_id;
+e-&gt;action = ButtonAction_DoubleClick;
+QF_PUBLISH((QEvt *)e, me);</action>
+       <tran_glyph conn="16,60,3,3,-10,-46,10">
         <action box="-10,-6,12,2"/>
        </tran_glyph>
       </tran>
@@ -99,17 +146,214 @@
     <state_diagram size="90,90"/>
    </statechart>
   </class>
+  <class name="sm_count" superclass="qpc::QActive">
+   <attribute name="count_click" type="uint32_t" visibility="0x00" properties="0x00"/>
+   <attribute name="count_double_click" type="uint32_t" visibility="0x00" properties="0x00"/>
+   <attribute name="count_long_press" type="uint32_t" visibility="0x00" properties="0x00"/>
+   <operation name="sm_count_init" type="void" visibility="0x00" properties="0x00">
+    <code>// 活动对象的构建
+QActive_ctor(&amp;me-&gt;super, Q_STATE_CAST(&amp;sm_count_initial));
+// 活动对象的启动
+static QEvt const *equeue[SM_COUNT_QUEUE_LENGTH];
+QACTIVE_START(&amp;me-&gt;super,
+              SmPrio_Count,
+              equeue, SM_COUNT_QUEUE_LENGTH,
+              (void *)0, 0U,
+              (void *)0);</code>
+   </operation>
+   <statechart properties="0x00">
+    <initial target="../1">
+     <initial_glyph conn="26,6,4,0,8">
+      <action box="0,-2,10,2"/>
+     </initial_glyph>
+    </initial>
+    <state name="work">
+     <entry>QActive_subscribe(&amp;me-&gt;super, ButtonClick_SIG);
+QActive_subscribe(&amp;me-&gt;super, ButtonDoubleClick_SIG);
+QActive_subscribe(&amp;me-&gt;super, ButtonLongPress_SIG);</entry>
+     <tran trig="ButtonClick">
+      <action>me-&gt;count_click ++;</action>
+      <tran_glyph conn="10,24,3,-1,18">
+       <action box="2,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="ButtonDoubleClick">
+      <action>me-&gt;count_double_click ++;</action>
+      <tran_glyph conn="10,28,3,-1,18">
+       <action box="2,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <tran trig="ButtonLongPress">
+      <action>me-&gt;count_long_press ++;</action>
+      <tran_glyph conn="10,32,3,-1,18">
+       <action box="2,-2,10,2"/>
+      </tran_glyph>
+     </tran>
+     <state_glyph node="10,14,50,29">
+      <entry box="1,2,6,2"/>
+     </state_glyph>
+    </state>
+    <state_diagram size="80,50"/>
+   </statechart>
+  </class>
  </package>
  <package name="event" stereotype="0x01">
-  <class name="button_event_t" superclass="qpc::QEvt">
+  <class name="button_event" superclass="qpc::QEvt">
    <attribute name="id" type="uint8_t" visibility="0x00" properties="0x00"/>
    <attribute name="action" type="uint8_t" visibility="0x00" properties="0x00"/>
   </class>
  </package>
  <directory name=".">
-  <file name="sm_button_qm.h"/>
-  <file name="sm_button_qm.c"/>
-  <file name="sm_led_qm.c"/>
-  <file name="sm_led_qm.h"/>
+  <file name="sm_button_qm.h" codec="UTF-8">
+   <text>#ifndef SM_BUTTON_QM_H
+#define SM_BUTTON_QM_H
+
+#include &quot;qpc.h&quot;
+#include &lt;stdbool.h&gt;
+
+#define SM_BUTTON_CLICK_TIME_PRESS                  200
+#define SM_BUTTON_CLICK_TIME_RELEASE                300
+#define SM_BUTTON_LONG_PRESS_TIME_PRESS             1000
+
+enum button_action
+{
+    ButtonAction_Click = 0,
+    ButtonAction_DoubleClick,
+    ButtonAction_LongPress,
+};
+
+$declare${sm::sm_button}
+
+void sm_button_init(sm_button *me,
+                    uint8_t button_id,
+                    uint8_t priority,
+                    QEvt const **event_queue, uint32_t equeue_size);
+
+$declare${event::button_event}
+
+#endif
+</text>
+  </file>
+  <file name="sm_button_qm.c" codec="UTF-8">
+   <text>#include &quot;sm_button_qm.h&quot;
+#include &quot;event_def.h&quot;
+#include &quot;button.h&quot;
+#include &quot;bsp.h&quot;
+
+Q_DEFINE_THIS_MODULE(&quot;SmButton&quot;)
+
+void sm_button_init(sm_button *me,
+                    uint8_t button_id,
+                    uint8_t priority,
+                    QEvt const **event_queue, uint32_t equeue_size)
+{
+    me-&gt;button_id = button_id;
+    me-&gt;status = false;
+    me-&gt;status_bkp = false;
+
+    // 时间事件的构建
+    QTimeEvt_ctorX(&amp;me-&gt;e_poll, &amp;me-&gt;super, ButtonPoll_SIG, 0U);
+    QTimeEvt_ctorX(&amp;me-&gt;e_time_count, &amp;me-&gt;super, TimeCount_SIG, 0U);
+    
+    // 活动对象的构建
+    QActive_ctor(&amp;me-&gt;super, Q_STATE_CAST(&amp;sm_button_initial));
+    // 活动对象的启动
+    QACTIVE_START(&amp;me-&gt;super,
+                  priority,
+                  event_queue, equeue_size,
+                  (void *)0, 0U,
+                  (void *)0);
+}
+
+$define${sm::sm_button}
+</text>
+  </file>
+  <file name="event_def.h">
+   <text>#ifndef EVENT_DEF_H
+#define EVENT_DEF_H
+
+#include &quot;qpc.h&quot;
+
+enum
+{
+    Event_Test = Q_USER_SIG,
+    Evt_Button,
+    ButtonClick_SIG,
+    ButtonDoubleClick_SIG,
+    ButtonLongPress_SIG,
+
+    MAX_PUB_SIG,
+
+    Evt_Led1_OnOff,
+    Evt_Led2_OnOff,
+    Evt_Led3_OnOff,
+    Evt_Led4_OnOff,
+
+    ButtonPoll_SIG,
+    TimeCount_SIG,
+    ButtonPressed_SIG,
+    ButtonReleased_SIG,
+
+
+
+    MAX_SIG
+};
+
+typedef struct m_evt_tag {
+    QEvt super;
+    uint32_t data;
+} m_evt_t;
+
+#endif
+</text>
+  </file>
+  <file name="sm_count.h" codec="UTF-8">
+   <text>#ifndef SM_COUNT_H
+#define SM_COUNT_H
+
+#include &quot;qpc.h&quot;
+#include &lt;stdbool.h&gt;
+
+void sm_count_init(void);
+
+#endif
+</text>
+  </file>
+  <file name="sm_count.c" codec="UTF-8">
+   <text>#include &quot;sm_count.h&quot;
+#include &quot;event_def.h&quot;
+#include &quot;sm_def.h&quot;
+
+Q_DEFINE_THIS_MODULE(&quot;SmCount&quot;)
+
+$declare${sm::sm_count}
+
+sm_count count;
+void sm_count_init(void)
+{
+    sm_count_sm_count_init(&amp;count);
+}
+
+$define${sm::sm_count}
+</text>
+  </file>
+  <file name="sm_def.h" codec="UTF-8">
+   <text>#ifndef SM_DEF_H
+#define SM_DEF_H
+
+enum
+{
+    SmPrio_Led = 1,
+    SmPrio_Button,
+    SmPrio_Count,
+};
+
+#define SM_LED_QUEUE_LENGTH                     (32)
+#define SM_BUTTON_QUEUE_LENGTH                  (128)
+#define SM_COUNT_QUEUE_LENGTH                   (32)
+
+#endif
+</text>
+  </file>
  </directory>
 </model>

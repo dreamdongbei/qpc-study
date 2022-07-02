@@ -27,7 +27,8 @@ void cb_systick(void)
 {
     if ((system_time() % 500) == 0)
     {
-        QEvt *e = Q_NEW(QEvt, Evt_LedOnOff);
+        // 基类
+        QEvt *e = (QEvt *)Q_NEW(QEvt, Evt_LedOnOff);
         QACTIVE_POST(&sm_led.super, e, &cb_systick);
     }
 }

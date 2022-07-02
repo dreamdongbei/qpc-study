@@ -48,6 +48,15 @@ static QState state_init(sm_led_t * const me, void const * const par)
     return Q_TRAN(&state_on);
 }
 
+void time_delay_ms(uint32_t ms)
+{
+    for (uint32_t i = 0; i < ms; i ++)
+    {
+        uint32_t temp = 450000;
+        while (temp --);
+    }
+}
+
 // LED的on状态
 static QState state_on(sm_led_t * const me, QEvt const * const e)
 {
