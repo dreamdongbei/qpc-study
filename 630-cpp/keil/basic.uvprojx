@@ -394,9 +394,9 @@
               <FilePath>..\App\bsp.cpp</FilePath>
             </File>
             <File>
-              <FileName>led.cpp</FileName>
+              <FileName>pin_out.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\App\led.cpp</FilePath>
+              <FilePath>..\App\pin_out.cpp</FilePath>
             </File>
           </Files>
         </Group>

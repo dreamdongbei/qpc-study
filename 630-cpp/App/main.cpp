@@ -1,8 +1,8 @@
 #include "bsp.h"
-#include "led.h"
+#include "pin_out.h"
 #include "gd32f3x0.h"
 
-led_t led;
+pin_out_t led;
 
 int main(void)
 {

@@ -1,14 +1,14 @@
 
-#include "led.h"
+#include "pin_out.h"
 #include "gd32f3x0.h"
 
-typedef struct led_hw_info
+typedef struct pin_hw_info
 {
     rcu_periph_enum clock;
     uint32_t port;
-} led_hw_info_t;
+} pin_hw_info_t;
 
-static const led_hw_info_t hw_info[] =
+static const pin_hw_info_t hw_info[] =
 {
     { RCU_GPIOA, GPIOA },
     { RCU_GPIOB, GPIOB },
@@ -17,10 +17,10 @@ static const led_hw_info_t hw_info[] =
     { RCU_GPIOF, GPIOF },
 };
 
-void led_t::init(uint32_t port, uint32_t pin)
+void pin_out_t::init(uint32_t port, uint32_t pin)
 {
     rcu_periph_enum clock = RCU_DMA;
-    for (uint8_t i = 0; i < sizeof(hw_info) / sizeof(led_hw_info_t); i ++)
+    for (uint8_t i = 0; i < sizeof(hw_info) / sizeof(pin_hw_info_t); i ++)
     {
         if (port == hw_info[i].port)
         {
@@ -40,7 +40,7 @@ void led_t::init(uint32_t port, uint32_t pin)
     gpio_bit_reset(port_, pin_);
 }
 
-void led_t::set_status(bool status)
+void pin_out_t::set_status(bool status)
 {
     gpio_bit_write(this->port_, this->pin_, (status != false ? SET : RESET));
 }

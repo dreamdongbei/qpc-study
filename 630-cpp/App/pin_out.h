@@ -1,9 +1,9 @@
-#ifndef LED_H
-#define LED_H
+#ifndef PIN_OUT_H
+#define PIN_OUT_H
 
 #include <stdint.h>
 
-class led_t
+class pin_out_t
 {
 public:
     void init(uint32_t port, uint32_t pin);
