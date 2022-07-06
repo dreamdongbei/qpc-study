@@ -10,6 +10,11 @@ void QK_onIdle(void)
 
 }
 
+void QXK_onIdle(void)
+{
+
+}
+
 void QF_onStartup(void)
 {
 
