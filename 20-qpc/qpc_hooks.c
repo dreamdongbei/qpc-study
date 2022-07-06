@@ -5,6 +5,11 @@ void QV_onIdle(void)
     QF_INT_ENABLE();
 }
 
+void QK_onIdle(void)
+{
+
+}
+
 void QF_onStartup(void)
 {
 
