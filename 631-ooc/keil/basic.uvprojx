@@ -7,22 +7,23 @@
 
   <Targets>
     <Target>
-      <TargetName>Target 1</TargetName>
+      <TargetName>Basic</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <uAC6>1</uAC6>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
+      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>GD32F330RB</Device>
+          <Device>GD32F330R8</Device>
           <Vendor>GigaDevice</Vendor>
           <PackID>GigaDevice.GD32F3x0_DFP.3.0.0</PackID>
           <PackURL>http://gd32mcu.com/data/documents/pack/</PackURL>
-          <Cpu>IRAM(0x20000000,0x04000) IROM(0x08000000,0x20000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
+          <Cpu>IRAM(0x20000000,0x04000) IROM(0x08000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
-          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0GD32F3x0 -FS08000000 -FL020000 -FP0($$Device:GD32F330RB$Flash\GD32F3x0.FLM))</FlashDriverDll>
+          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0GD32F3x0 -FS08000000 -FL010000 -FP0($$Device:GD32F330R8$Flash\GD32F3x0.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
-          <RegisterFile>$$Device:GD32F330RB$Device\Include\gd32f3x0.h</RegisterFile>
+          <RegisterFile>$$Device:GD32F330R8$Device\Include\gd32f3x0.h</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -32,7 +33,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>$$Device:GD32F330RB$SVD\GD32F3x0.svd</SFDFile>
+          <SFDFile>$$Device:GD32F330R8$SVD\GD32F3x0.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -48,10 +49,10 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>cpp</OutputName>
+          <OutputName>basic</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\Listings\</ListingPath>
@@ -133,11 +134,11 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -182,7 +183,7 @@
             <hadIRAM>1</hadIRAM>
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
-            <RvdsVP>2</RvdsVP>
+            <RvdsVP>1</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>0</hadIRAM2>
@@ -250,7 +251,7 @@
               <IROM>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x20000</Size>
+                <Size>0x10000</Size>
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -258,27 +259,27 @@
                 <Size>0x0</Size>
               </XRAM>
               <OCR_RVCT1>
-                <Type>0</Type>
+                <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT1>
               <OCR_RVCT2>
-                <Type>0</Type>
+                <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT2>
               <OCR_RVCT3>
-                <Type>0</Type>
+                <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x20000</Size>
+                <Size>0x10000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
-                <Type>0</Type>
+                <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT5>
@@ -312,7 +313,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>2</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -324,7 +325,7 @@
             <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>3</v6Lang>
@@ -336,9 +337,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>USE_STDPERIPH_DRIVER,GD32F3X0,GD32F330</Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>..\..\10-mcu\GD32F330;..\..\10-mcu\GD32F330\StdLib\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -380,7 +381,154 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Source Group 1</GroupName>
+          <GroupName>User</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>pin_out.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\pin_out.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Mcu</GroupName>
+          <Files>
+            <File>
+              <FileName>system_gd32f3x0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\system_gd32f3x0.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup_gd32f3x0.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\startup_gd32f3x0.s</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Lib</GroupName>
+          <Files>
+            <File>
+              <FileName>gd32f3x0_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_cec.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_cec.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_cmp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_cmp.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_ctc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_ctc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_dac.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_dbg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_dbg.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_fmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_fmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_fwdgt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_fwdgt.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_misc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_pmu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_pmu.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_rcu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_rcu.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_syscfg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_syscfg.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_tsi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_tsi.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f3x0_wwdgt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\10-mcu\GD32F330\StdLib\Source\gd32f3x0_wwdgt.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>
@@ -391,5 +539,14 @@
     <components/>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>basic</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>
