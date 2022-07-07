@@ -12,7 +12,6 @@ public:
 
 private:
     uint32_t frequency;
-    bool status;
 };
 
 
