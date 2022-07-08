@@ -7,7 +7,7 @@ void QV_onIdle(void)
 
 void QK_onIdle(void)
 {
-
+    QF_INT_ENABLE();
 }
 
 void QXK_onIdle(void)

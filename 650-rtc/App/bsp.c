@@ -4,7 +4,7 @@
 
 static void systick_config(void);
 
-static uint32_t system_time_ms = 0;
+uint32_t system_time_ms = 0;
 
 void bsp_init(void)
 {
@@ -34,8 +34,9 @@ static void systick_config(void)
 void SysTick_Handler(void)
 {
     QK_ISR_ENTRY();
-
+    
     system_time_ms ++;
-
+    cb_systick();
+    
     QK_ISR_EXIT();
 }
