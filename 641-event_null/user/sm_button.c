@@ -16,6 +16,8 @@ static QState state_work(sm_button_t * const me, QEvt const * const e);
     static QState work_double_click(sm_button_t * const me, QEvt const * const e);
     static QState work_long_press(sm_button_t * const me, QEvt const * const e);
 
+static void event_button_pulish(uint32_t e_sig);
+
 void sm_button_init(sm_button_t *me,
                     uint8_t button_id,
                     uint8_t priority,
@@ -24,6 +26,11 @@ void sm_button_init(sm_button_t *me,
     me->button_id = button_id;
     me->status = false;
     me->status_bkp = false;
+
+    // 空事件模式
+    me->event_click = Event_Null;
+    me->event_double_click = Event_Null;
+    me->event_long_press = Event_Null;
 
     // 时间事件的构建
     QTimeEvt_ctorX(&me->event_poll, &me->super, Evt_Button_Poll, 0U);
@@ -37,6 +44,16 @@ void sm_button_init(sm_button_t *me,
                   event_queue, equeue_size,
                   (void *)0, 0U,
                   (void *)0);
+}
+
+void sm_button_set_event(sm_button_t *me,
+                         uint32_t e_click,
+                         uint32_t e_double_click,
+                         uint32_t e_long_press)
+{
+    me->event_click = e_click;
+    me->event_double_click = e_double_click;
+    me->event_long_press = e_long_press;
 }
 
 // 状态函数的实现 ---------------------------------------------------------------
@@ -110,10 +127,7 @@ static QState work_click(sm_button_t * const me, QEvt const * const e)
             }
             else
             {
-                button_event_t *e = (button_event_t *)Q_NEW(button_event_t, Evt_Button);
-                e->id = me->button_id;
-                e->action = ButtonAction_Click;
-                QF_PUBLISH((QEvt *)e, me);
+                event_button_pulish(me->event_click);
 
                 return Q_TRAN(&work_idle);
             }
@@ -135,11 +149,8 @@ static QState work_release(sm_button_t * const me, QEvt const * const e)
         case Evt_Button_TimeCount:
             if ((system_time() - me->time_release) >= SM_BUTTON_CLICK_TIME_RELEASE)
             {
-                button_event_t *e = (button_event_t *)Q_NEW(button_event_t, Evt_Button);
-                e->id = me->button_id;
-                e->action = ButtonAction_Click;
-                QF_PUBLISH((QEvt *)e, me);
-                
+                event_button_pulish(me->event_click);
+
                 return Q_TRAN(&work_idle);
             }
             return Q_HANDLED();
@@ -155,11 +166,7 @@ static QState work_double_click(sm_button_t * const me, QEvt const * const e)
     {
         case Evt_Button_Released:
         {
-            // 产生双击
-            button_event_t *e = (button_event_t *)Q_NEW(button_event_t, Evt_Button);
-            e->id = me->button_id;
-            e->action = ButtonAction_DoubleClick;
-            QF_PUBLISH((QEvt *)e, me);
+            event_button_pulish(me->event_double_click);
 
             return Q_TRAN(&work_idle);
         }
@@ -175,10 +182,7 @@ static QState work_long_press(sm_button_t * const me, QEvt const * const e)
     {
         case Evt_Button_Released:
         {
-            button_event_t *e = (button_event_t *)Q_NEW(button_event_t, Evt_Button);
-            e->id = me->button_id;
-            e->action = ButtonAction_LongPress;
-            QF_PUBLISH((QEvt *)e, me);
+            event_button_pulish(me->event_long_press);
 
             return Q_TRAN(&work_idle);
         }
@@ -186,4 +190,10 @@ static QState work_long_press(sm_button_t * const me, QEvt const * const e)
         default:
             return Q_SUPER(&state_work);
     }
+}
+
+static void event_button_pulish(uint32_t e_sig)
+{
+    QEvt *e = (QEvt *)Q_NEW(button_event_t, e_sig);
+    QF_PUBLISH(e, me);
 }
