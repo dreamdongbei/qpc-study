@@ -399,9 +399,9 @@
               <FilePath>..\user\main.c</FilePath>
             </File>
             <File>
-              <FileName>sm_led.c</FileName>
+              <FileName>sm_led_qm.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\user\sm_led.c</FilePath>
+              <FilePath>..\user\sm_led_qm.c</FilePath>
             </File>
           </Files>
         </Group>

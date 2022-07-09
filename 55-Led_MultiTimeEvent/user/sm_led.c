@@ -34,7 +34,7 @@ void sm_led_init(void)
         QTimeEvt_ctorX(&me->time_event[i], &me->super, event_table[i], 0U);
     }
     
-    // 活动对象的构建
+    // 活动对象的构造
     QActive_ctor(&me->super, Q_STATE_CAST(&state_init));
     // 活动对象的启动
     static QEvt const *e_queue[SM_LED_QUEUE_LENGTH];
@@ -66,6 +66,14 @@ static QState state_init(sm_led_t * const me, void const * const par)
 // LED的on状态
 static QState state_work(sm_led_t * const me, QEvt const * const e)
 {
+    if (e->sig == Evt_Led1_OnOff)
+    {
+        led_set_status(Device_Led1, me->status[Device_Led1]);
+        me->status[Device_Led1] = !me->status[Device_Led1];
+        
+        return Q_HANDLED();
+    }
+
     switch (e->sig) {
         case Q_ENTRY_SIG:                           // 状态的进入事件
 
@@ -74,10 +82,10 @@ static QState state_work(sm_led_t * const me, QEvt const * const e)
         case Q_EXIT_SIG:
             return Q_HANDLED();
 
-        case Evt_Led1_OnOff:
-            led_set_status(Device_Led1, me->status[Device_Led1]);
-            me->status[Device_Led1] = !me->status[Device_Led1];
-            return Q_HANDLED();
+        // case Evt_Led1_OnOff:
+        //     led_set_status(Device_Led1, me->status[Device_Led1]);
+        //     me->status[Device_Led1] = !me->status[Device_Led1];
+        //     return Q_HANDLED();
         
         case Evt_Led2_OnOff:
             led_set_status(Device_Led2, me->status[Device_Led2]);

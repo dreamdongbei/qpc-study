@@ -9,14 +9,10 @@
   <item name="backups">0</item>
  </group>
  <group name="windows">
-  <item id="sm::sm_button::SM">0,0,299,924</item>
-  <item id=".::sm_button_qm.h">-59,0,674,300</item>
-  <item id=".::sm_button_qm.c">299,37,262,439</item>
-  <item id="sm::sm_count::SM">0,0,640,480</item>
-  <item id=".::sm_count.h">-59,176,674,300</item>
-  <item id=".::sm_count.c">0,0,615,452,*</item>
-  <item id=".::event_def.h">0,176,674,300</item>
-  <item id=".::sm_def.h">0,0,674,300</item>
+  <item id="sm::sm_button::SM">0,0,646,459,*</item>
+  <item id=".::sm_count.c">0,0,674,300</item>
+  <item id=".::sm_button_qm.c">0,24,647,459</item>
+  <item id=".::sm_button_qm.h">0,183,674,300</item>
  </group>
  <group name="search">
   <item name="options">2032128</item>

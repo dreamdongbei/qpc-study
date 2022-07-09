@@ -15,15 +15,15 @@
      <action>// Send all time events.
 QTimeEvt_armX(&amp;me-&gt;e_poll, 1, 1);
 QTimeEvt_armX(&amp;me-&gt;e_time_count, 1, 1);</action>
-     <initial_glyph conn="16,2,4,0,4">
+     <initial_glyph conn="10,2,5,0,6,4">
       <action box="0,-2,10,2"/>
      </initial_glyph>
     </initial>
     <state name="work">
      <entry>// 初始化</entry>
      <initial target="../2">
-      <initial_glyph conn="18,10,4,0,2">
-       <action box="0,-2,10,2"/>
+      <initial_glyph conn="11,10,5,0,7,2">
+       <action box="0,0,10,2"/>
       </initial_glyph>
      </initial>
      <tran trig="ButtonPoll">
@@ -161,7 +161,7 @@ QACTIVE_START(&amp;me-&gt;super,
               (void *)0, 0U,
               (void *)0);</code>
    </operation>
-   <statechart properties="0x00">
+   <statechart properties="0x01">
     <initial target="../1">
      <initial_glyph conn="26,6,4,0,8">
       <action box="0,-2,10,2"/>

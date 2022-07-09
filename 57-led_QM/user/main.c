@@ -1,4 +1,5 @@
 #include "bsp.h"
+#include "led.h"
 #include "qpc.h"
 #include "event_def.h"
 #include "sm_led.h"
@@ -6,7 +7,9 @@
 int main(void)
 {
     bsp_init();
+    led_init();
     
+
     static QSubscrList sub_sto[MAX_PUB_SIG];            // 定义订阅缓冲区
     static QF_MPOOL_EL(m_evt_t) sml_pool_sto[128];      // 定义事件池
     
@@ -25,7 +28,7 @@ void cb_systick(void)
 {
     if ((system_time() % 500) == 0)
     {
-        QEvt *e = Q_NEW(QEvt, Evt_LedOnOff);
+        QEvt *e = Q_NEW(QEvt, Evt_LedOnOff_SIG);
         QF_PUBLISH(e, &cb_systick);
     }
 }
